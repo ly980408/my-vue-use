@@ -1,23 +1,23 @@
-import { ref } from 'vue-demi'
+import { ref, computed } from 'vue-demi'
 import { isSameSecond, parseTimeData, parseFormat } from './utils.js'
 
 export function useCountDown(time, options = {}) {
   const { format = 'HH:mm:ss', autoStart = false, onChange = () => {}, onFinish = () => {} } = options || {}
 
+  const remain = ref(+time)
   let counting = false
-  let remain = +time
   let endTime = 0
   let rafId = null
 
-  const currentTime = ref({ days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 0 })
-  const formattedTime = ref('')
+  const currentTime = computed(() => parseTimeData(remain.value))
+  const formattedTime = computed(() => parseFormat(format, currentTime.value))
 
   const start = () => {
     if (counting) {
       return
     }
     counting = true
-    endTime = Date.now() + remain
+    endTime = Date.now() + remain.value
     tick()
   }
   const pause = () => {
@@ -26,8 +26,7 @@ export function useCountDown(time, options = {}) {
   }
   const reset = newTime => {
     pause()
-    remain = +newTime || +time
-    updateTime()
+    remain.value = +newTime || +time
     if (autoStart) {
       start()
     }
@@ -40,30 +39,24 @@ export function useCountDown(time, options = {}) {
       }
       const newRemain = Math.max(endTime - Date.now(), 0)
 
-      if (!isSameSecond(newRemain, remain) || newRemain === 0) {
+      if (!isSameSecond(newRemain, remain.value) || newRemain === 0) {
         updateRemain(newRemain)
       }
 
-      if (remain > 0) {
+      if (remain.value > 0) {
         tick()
       }
     })
   }
   const updateRemain = newRemain => {
-    remain = newRemain
-    updateTime()
+    remain.value = newRemain
     onChange(currentTime.value)
     if (remain === 0) {
       pause()
       onFinish()
     }
   }
-  const updateTime = () => {
-    currentTime.value = parseTimeData(remain)
-    formattedTime.value = parseFormat(format, currentTime.value)
-  }
 
-  updateTime()
   if (autoStart) {
     start()
   }
