@@ -1,5 +1,5 @@
 <script setup>
-  import { useCountDown } from '.'
+  import { useCountDown } from '@packages'
   const { formattedTime, start, pause, reset } = useCountDown(10000, {
     onChange: time => {
       console.log('count down', time)

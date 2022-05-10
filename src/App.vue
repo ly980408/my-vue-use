@@ -1,11 +1,11 @@
 <script setup>
-  import useCountDownDemo from '@packages/useCountDown/demo.vue'
+  import UseCountDownDemo from '@packages/useCountDown/demo.vue'
 </script>
 
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
   <h1>My Vue Use</h1>
-  <useCountDownDemo />
+  <UseCountDownDemo />
 </template>
 
 <style>

@@ -2,6 +2,15 @@
   "name": "my-vue-use",
   "private": true,
   "version": "0.0.0",
+  "files": ["dist"],
+  "main": "./dist/my-vue-use.umd.js",
+  "module": "./dist/my-vue-use.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/my-vue-use.es.js",
+      "require": "./dist/my-vue-use.umd.js"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
