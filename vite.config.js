@@ -7,7 +7,8 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      '@packages': resolve(__dirname, 'packages')
+      '@packages': resolve(__dirname, 'packages'),
+      '@lib': resolve(__dirname, 'lib')
     }
   },
   optimizeDeps: {
